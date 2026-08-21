@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
+
 import logo from '../assets/logo/logo.png';
+import darkLogo from '../assets/logo/logo-dark.png';
 import defaultProfile from '../assets/icons/default-profile.png';
 import '../styles/Header.css';
 
@@ -7,7 +9,9 @@ function Header({ user }) {
    const navigate = useNavigate();
 
    const handleProfileClick = () => {
-      if (!user) {
+      if (user) {
+         navigate('/mypage');
+      } else {
          navigate('/login');
       }
    };
@@ -21,13 +25,16 @@ function Header({ user }) {
 
    return (
       <header className="header">
-         <img src={logo} alt="TodoList" className="header_logo" />
+         <div className="header-logo-wrap">
+            <img src={logo} alt="TodoList" className="header_logo header-logo-light" />
+            <img src={darkLogo} alt="TodoList" className="header_logo header-logo-dark" />
+         </div>
 
          <button
             type="button"
             className="header_profile-btn"
             onClick={handleProfileClick}
-            aria-label={user ? '프로필' : '로그인'}
+            aria-label={user ? '마이페이지로 이동' : '로그인'}
          >
             <img
                src={user?.profileImage || defaultProfile}

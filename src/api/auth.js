@@ -1,5 +1,6 @@
-import { loginWithGoogle } from '/src/api/auth/google';
-import { loginWithKakao } from '/src/api/auth/kakao';
+import { loginWithGoogle } from './auth/google.js';
+import { loginWithKakao } from './auth/kakao.js';
+import { loginWithNaver } from './auth/naver.js';
 
 export const startSocialLogin = async (provider) => {
   switch (provider) {
@@ -10,13 +11,11 @@ export const startSocialLogin = async (provider) => {
       return loginWithKakao();
 
     case 'naver':
-      throw new Error(
-        '네이버 로그인 코드는 아직 준비되지 않았습니다.',
-      );
+      return loginWithNaver();
 
     default:
       throw new Error(
-        '지원하지 않는 로그인 방식입니다.',
+        `지원하지 않는 로그인 방식입니다: ${provider}`,
       );
   }
 };

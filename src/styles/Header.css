@@ -16,6 +16,23 @@
   height: 36px;
 }
 
+.header-logo-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.header-logo-dark {
+  display: none;
+}
+
+:root[data-theme='dark'] .header-logo-light {
+  display: none;
+}
+
+:root[data-theme='dark'] .header-logo-dark {
+  display: block;
+}
+
 .header_profile-btn {
   width: 40px;
   height: 40px;

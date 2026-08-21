@@ -1,56 +1,48 @@
-const KAKAO_SDK_URL =
-  'https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js';
+const kakaoRestApiKey = import.meta.env.VITE_KAKAO_REST_API_KEY;
 
-const loadKakaoSdk = () => {
-  return new Promise((resolve, reject) => {
-    if (window.Kakao) {
-      resolve(window.Kakao);
-      return;
-    }
+const kakaoRedirectUri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
 
-    const existingScript = document.querySelector(
-      `script[src="${KAKAO_SDK_URL}"]`,
-    );
+const KAKAO_AUTHORIZE_URL = 'https://kauth.kakao.com/oauth/authorize';
 
-    if (existingScript) {
-      existingScript.addEventListener('load', () => {
-        resolve(window.Kakao);
-      });
+const KAKAO_OAUTH_STATE_KEY = 'kakao_oauth_state';
 
-      existingScript.addEventListener('error', reject);
-      return;
-    }
+const createOAuthState = () => {
+   const randomValues = new Uint32Array(4);
 
-    const script = document.createElement('script');
+   window.crypto.getRandomValues(randomValues);
 
-    script.src = KAKAO_SDK_URL;
-    script.async = true;
-
-    script.onload = () => {
-      resolve(window.Kakao);
-    };
-
-    script.onerror = () => {
-      reject(
-        new Error('카카오 SDK를 불러오지 못했습니다.'),
-      );
-    };
-
-    document.head.appendChild(script);
-  });
+   return Array.from(randomValues, (value) =>
+      value.toString(16).padStart(8, '0')
+   ).join('');
 };
 
-export const loginWithKakao = async () => {
-  const Kakao = await loadKakaoSdk();
+export const loginWithKakao = () => {
+   if (!kakaoRestApiKey) {
+      throw new Error('VITE_KAKAO_REST_API_KEY가 설정되지 않았습니다.');
+   }
 
-  if (!Kakao.isInitialized()) {
-    Kakao.init(
-      import.meta.env.VITE_KAKAO_JAVASCRIPT_KEY,
-    );
-  }
+   if (!kakaoRedirectUri) {
+      throw new Error('VITE_KAKAO_REDIRECT_URI가 설정되지 않았습니다.');
+   }
 
-  Kakao.Auth.authorize({
-    redirectUri:
-      import.meta.env.VITE_KAKAO_REDIRECT_URI,
-  });
+   const state = createOAuthState();
+
+   sessionStorage.setItem(KAKAO_OAUTH_STATE_KEY, state);
+
+   const params = new URLSearchParams({
+      client_id: kakaoRestApiKey,
+      redirect_uri: kakaoRedirectUri,
+      response_type: 'code',
+      state,
+   });
+
+   window.location.href = `${KAKAO_AUTHORIZE_URL}?${params.toString()}`;
+};
+
+export const validateKakaoOAuthState = (receivedState) => {
+   const savedState = sessionStorage.getItem(KAKAO_OAUTH_STATE_KEY);
+
+   sessionStorage.removeItem(KAKAO_OAUTH_STATE_KEY);
+
+   return Boolean(receivedState && savedState && receivedState === savedState);
 };

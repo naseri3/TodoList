@@ -8,4 +8,230 @@ body,
 
 body {
   font-family: Arial, "Noto Sans KR", sans-serif;
+  background: #fff;
+  color: #292929;
+  transition: background-color .2s ease, color .2s ease;
+}
+
+:root[data-theme='dark'] body,
+:root[data-theme='dark'] .home-page,
+:root[data-theme='dark'] .todo-page,
+:root[data-theme='dark'] .header {
+  background: #202124;
+  color: #f3f3f3;
+}
+
+:root[data-theme='dark'] .folder-card,
+:root[data-theme='dark'] .folder-menu,
+:root[data-theme='dark'] .folder-modal,
+:root[data-theme='dark'] .warning-modal,
+:root[data-theme='dark'] .task-modal {
+  background: #2b2d31;
+  color: #f3f3f3;
+}
+
+:root[data-theme='dark'] input,
+:root[data-theme='dark'] select,
+:root[data-theme='dark'] textarea,
+:root[data-theme='dark'] .task-modal-actions button,
+:root[data-theme='dark'] .folder-modal-actions button {
+  border-color: #555;
+  background: #34363b;
+  color: #f3f3f3;
+}
+
+:root[data-theme='dark'] .folder-card {
+  background: linear-gradient(to right, var(--folder-color) 11px, #2b2d31 11px);
+}
+
+:root[data-theme='dark'] .todo-title-row,
+:root[data-theme='dark'] .mypage-menu button,
+:root[data-theme='dark'] .folder-menu button {
+  border-color: #45474d;
+}
+
+:root[data-theme='dark'] .todo-stats strong,
+:root[data-theme='dark'] .tasks-list,
+:root[data-theme='dark'] .folder-card h2 {
+  color: #f3f3f3;
+}
+
+:root[data-theme='dark'] .todo-filters button:not(.active),
+:root[data-theme='dark'] .task-item {
+  background: #2b2d31;
+  color: #e6e6e6;
+}
+
+/* 홈 화면 다크모드 */
+:root[data-theme='dark'] .header {
+  border-bottom-color: #4a4f59;
+  background: #191b20;
+}
+
+:root[data-theme='dark'] .header_profile-btn {
+  border: 1px solid #737986;
+  background: #30343b;
+}
+
+:root[data-theme='dark'] .list-search {
+  border-color: #686e79;
+  background: #2b2e34;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .03);
+}
+
+:root[data-theme='dark'] .list-search input {
+  background: transparent;
+  color: #f5f7fa;
+}
+
+:root[data-theme='dark'] .list-search input::placeholder {
+  color: #c2c7d0;
+  opacity: 1;
+}
+
+:root[data-theme='dark'] .folder-card {
+  border-color: #646a75;
+  background: linear-gradient(to right, var(--folder-color) 11px, #292c31 11px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, .18);
+}
+
+:root[data-theme='dark'] .folder-card:hover {
+  border-color: #7c8492;
+  background: linear-gradient(to right, var(--folder-color) 11px, #30343a 11px);
+}
+
+:root[data-theme='dark'] .folder-card-info h2 {
+  color: #f7f8fa;
+}
+
+:root[data-theme='dark'] .folder-card-info p {
+  color: #c1c6cf;
+}
+
+:root[data-theme='dark'] .folder-menu-button img {
+  filter: brightness(1.65);
+}
+
+:root[data-theme='dark'] .folder-menu button {
+  background: #2b2d31;
+  color: #e7e9ed;
+}
+
+:root[data-theme='dark'] .folder-menu button:hover {
+  background: #373a40;
+}
+
+/* 할 일 목록 화면 다크모드 */
+:root[data-theme='dark'] .todo-title-row {
+  border-bottom-color: #555b66;
+  color: #aebcf0;
+}
+
+:root[data-theme='dark'] .todo-title-row h1 {
+  color: #f4f6fa;
+}
+
+:root[data-theme='dark'] .todo-title-row button {
+  color: #aebcf0;
+}
+
+:root[data-theme='dark'] .todo-title-row button:last-child img {
+  filter: brightness(2.2) saturate(.8);
+}
+
+:root[data-theme='dark'] .todo-stats {
+  color: #c5cad3;
+}
+
+:root[data-theme='dark'] .todo-stats strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+:root[data-theme='dark'] .todo-search {
+  border-color: #686e79;
+  background: #2b2e34;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .03);
+}
+
+:root[data-theme='dark'] .todo-search input {
+  background: transparent;
+  color: #f5f7fa;
+}
+
+:root[data-theme='dark'] .todo-search input::placeholder {
+  color: #c2c7d0;
+  opacity: 1;
+}
+
+:root[data-theme='dark'] .todo-filters button {
+  border-color: #858b96;
+  background: #292c31;
+  color: #eef0f4;
+}
+
+:root[data-theme='dark'] .todo-filters button:hover:not(.active) {
+  border-color: #a5acb8;
+  background: #34383f;
+}
+
+:root[data-theme='dark'] .todo-filters button.active {
+  border-color: #7892ff;
+  background: #6d88ff;
+  color: #fff;
+}
+
+:root[data-theme='dark'] .tasks-list {
+  background: transparent;
+}
+
+:root[data-theme='dark'] .task-item {
+  padding-right: 8px;
+  padding-left: 8px;
+  border-bottom-color: #565c67;
+  background: transparent;
+  color: #f0f2f5;
+}
+
+:root[data-theme='dark'] .task-item input[type='checkbox'] {
+  position: relative;
+  flex: 0 0 20px;
+  appearance: none;
+  border: 2px solid #aeb4bf;
+  border-radius: 3px;
+  background: #202328;
+  cursor: pointer;
+}
+
+:root[data-theme='dark'] .task-item input[type='checkbox']:checked {
+  border-color: #7892ff;
+  background: #6d88ff;
+}
+
+:root[data-theme='dark'] .task-item input[type='checkbox']:checked::after {
+  position: absolute;
+  top: 1px;
+  left: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  content: '';
+  transform: rotate(45deg);
+}
+
+:root[data-theme='dark'] .task-item .completed {
+  color: #aeb3bc;
+}
+
+:root[data-theme='dark'] .importance-높음 {
+  color: #ff6464;
+}
+
+:root[data-theme='dark'] .importance-중간 {
+  color: #ff9d4d;
+}
+
+:root[data-theme='dark'] .importance-낮음 {
+  color: #ffd34e;
 }

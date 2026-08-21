@@ -1,93 +1,41 @@
-const GOOGLE_SDK_URL =
-  'https://accounts.google.com/gsi/client';
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+} from 'firebase/auth';
 
-const loadGoogleSdk = () => {
-  return new Promise((resolve, reject) => {
-    if (window.google?.accounts?.id) {
-      resolve(window.google);
-      return;
-    }
+import { firebaseAuth } from '/src/api/firebase.js';
 
-    const existingScript = document.querySelector(
-      `script[src="${GOOGLE_SDK_URL}"]`,
-    );
+const googleProvider = new GoogleAuthProvider();
 
-    if (existingScript) {
-      existingScript.addEventListener('load', () => {
-        resolve(window.google);
-      });
-
-      existingScript.addEventListener('error', reject);
-      return;
-    }
-
-    const script = document.createElement('script');
-
-    script.src = GOOGLE_SDK_URL;
-    script.async = true;
-    script.defer = true;
-
-    script.onload = () => {
-      resolve(window.google);
-    };
-
-    script.onerror = () => {
-      reject(
-        new Error('Google SDK를 불러오지 못했습니다.'),
-      );
-    };
-
-    document.head.appendChild(script);
-  });
-};
-
-const decodeJwtPayload = (token) => {
-  const payload = token.split('.')[1];
-  const normalized = payload
-    .replace(/-/g, '+')
-    .replace(/_/g, '/');
-
-  return JSON.parse(
-    decodeURIComponent(
-      atob(normalized)
-        .split('')
-        .map((character) => {
-          const code = character
-            .charCodeAt(0)
-            .toString(16)
-            .padStart(2, '0');
-
-          return `%${code}`;
-        })
-        .join(''),
-    ),
-  );
-};
+googleProvider.setCustomParameters({
+  prompt: 'select_account',
+});
 
 export const loginWithGoogle = async () => {
-  const google = await loadGoogleSdk();
+  try {
+    const result = await signInWithPopup(
+      firebaseAuth,
+      googleProvider,
+    );
 
-  return new Promise((resolve) => {
-    google.accounts.id.initialize({
-      client_id:
-        import.meta.env.VITE_GOOGLE_CLIENT_ID,
+    const user = result.user;
 
-      callback: (response) => {
-        const user = decodeJwtPayload(
-          response.credential,
-        );
+    return {
+      id: user.uid,
+      name: user.displayName || 'Google 사용자',
+      email: user.email || null,
+      profileImage: user.photoURL || null,
+      provider: 'google',
+    };
+  } catch (error) {
+    console.error(
+      'Google 로그인 오류:',
+      error.code,
+      error.message,
+    );
 
-        resolve({
-          id: user.sub,
-          name: user.name,
-          email: user.email,
-          profileImage: user.picture,
-          provider: 'google',
-          credential: response.credential,
-        });
-      },
-    });
-
-    google.accounts.id.prompt();
-  });
+    // throw new Error(
+    //   `Google 로그인에 실패했습니다. (${error.code ?? 'unknown'})`,
+    // );
+  }
 };
