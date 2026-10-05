@@ -37,5 +37,6 @@ export const loginWithGoogle = async () => {
     // throw new Error(
     //   `Google 로그인에 실패했습니다. (${error.code ?? 'unknown'})`,
     // );
+    console.log("코드 체크");
   }
 };
